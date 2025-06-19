@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id "org.javacc.javacc" version "latest.release"
+}
+
+group = 'com.manticore-projects'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    // JavaCC 8 Snapshots
+    maven {
+        url = uri('https://central.sonatype.com/repository/maven-snapshots/')
+    }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    javacc('org.javacc:core:8.1.0-SNAPSHOT') { changing = true }
+    javacc('org.javacc.generator:java:8.1.0-SNAPSHOT') { changing = true }
+}
+
+
+compileJavacc {
+    arguments = [grammar_encoding: 'UTF-8', static: 'false', java_template_type: 'modern']
+}
+
+test {
+    useJUnitPlatform()
+}
