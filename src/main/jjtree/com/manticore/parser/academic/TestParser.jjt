@@ -178,7 +178,8 @@ void DataBricksTemporalSpec(StringBuilder builder):
     LOOKAHEAD( { nextIs("@") || nextIs("@V") } ) ("@" | "@V") { builder.append(token.image).append(" "); }
     ( tk=<S_CHAR_LITERAL> | tk=<S_LONG>) { builder.append(tk.image); }
     |
-    [ "FOR" { builder.append(" FOR"); } ]
+    // Question: Why does `LOOKAHEAD( { nextIs("FOR") } ) <S_IDENTIFIER>` not work?!
+    [ LOOKAHEAD( { nextIs("FOR") } ) "FOR" { builder.append(" FOR"); } ]
 
     ( LOOKAHEAD( { nextIs("SYSTEM_TIMESTAMP") } ) <S_IDENTIFIER> | LOOKAHEAD( { nextIs("TIMESTAMP")} ) <K_DATETIMELITERAL> )
     { builder.append(" ").append(token.image); }
